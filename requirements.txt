@@ -1,0 +1,30 @@
+# Core ML
+torch
+torchvision
+torchaudio
+numpy
+pandas
+scikit-learn
+
+# Data Processing & Visualization
+matplotlib
+seaborn
+plotly
+pillow
+opencv-python
+gdown
+pyyaml
+tqdm
+
+# Experiment Tracking
+wandb
+
+# Notebook Utilities
+ipykernel
+notebook
+
+# Web Scraping (Group 1B)
+requests
+beautifulsoup4
+selenium
+webdriver-manager
