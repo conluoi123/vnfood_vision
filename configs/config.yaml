@@ -63,3 +63,14 @@ inference:
   top_k: 5 # Trả về top-5 dự đoán
   confidence_threshold: 0.3 # Dưới ngưỡng này → "Không xác định"
   model_path: "checkpoints/best_model.pth"
+  
+# ── RAG (Retrieval-Augmented Generation) ───────────────────────────────
+rag:
+  knowledge_base_path: "backend/data/knowledge_base/rag_knowledge_base.json"
+  chroma_dir: "backend/data/chroma_db"
+  collection_name: "vnfood_recipes"
+  embedding_model: "paraphrase-multilingual-MiniLM-L12-v2"
+  reranker_model: "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
+  dense_top_k: 10
+  sparse_top_k: 10
+  final_top_k: 3

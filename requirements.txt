@@ -16,6 +16,13 @@ gdown
 pyyaml
 tqdm
 
+# RAG & LLM
+chromadb
+sentence-transformers
+rank-bm25
+python-dotenv
+google-generativeai
+
 # Experiment Tracking
 wandb
 
