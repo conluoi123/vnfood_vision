@@ -4,8 +4,8 @@ Nhận vào 1 ảnh → trả về top-K dự đoán + confidence score
 Hỗ trợ: Test Time Augmentation (TTA)
 
 Chạy:
-  python src/inference.py --image path/to/anh.jpg
-  python src/inference.py --image path/to/anh.jpg --tta
+  python src/vision/inference.py --image path/to/anh.jpg
+  python src/vision/inference.py --image path/to/anh.jpg --tta
 """
 import argparse
 import json
@@ -18,8 +18,8 @@ import yaml
 from PIL import Image
 from torchvision import transforms
 
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-from src.model import VNFoodModel
+sys.path.append(str(Path(__file__).resolve().parents[2]))
+from src.vision.model import VNFoodModel
 
 
 # ─────────────────────────────────────────────

@@ -2,11 +2,11 @@
 train.py — VNFood Vision Training Loop
 
 Chạy tại LOCAL (từ thư mục gốc dự án):
-  python src/train.py
-  python src/train.py --backbone resnet50
+  python src/vision/train.py
+  python src/vision/train.py --backbone resnet50
 
 Chạy tại COLAB:
-  !python src/train.py --data_dir "/content/drive/MyDrive/VietFood-Project/data/processed"
+  !python src/vision/train.py --data_dir "/content/drive/MyDrive/VietFood-Project/data/processed"
 """
 import argparse
 import json
@@ -25,10 +25,10 @@ from torch.utils.data import DataLoader, WeightedRandomSampler, random_split
 from tqdm import tqdm
 
 # Thêm project root vào path
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+sys.path.append(str(Path(__file__).resolve().parents[2]))
 
-from src.dataset import VietnameseFoodDataset, get_transforms
-from src.model import FocalLoss, VNFoodModel, compute_class_weights, mixup_criterion, mixup_data
+from src.vision.dataset import VietnameseFoodDataset, get_transforms
+from src.vision.model import FocalLoss, VNFoodModel, compute_class_weights, mixup_criterion, mixup_data
 
 
 # ─────────────────────────────────────────────
@@ -150,7 +150,7 @@ def resolve_data_dir(config: dict, override_data_dir: str = None) -> str:
         return cfg_dir
 
     # Ưu tiên 4: Tự tìm từ vị trí file train.py
-    project_root = Path(__file__).resolve().parent.parent
+    project_root = Path(__file__).resolve().parents[2]
     auto_path = project_root / "data" / "processed"
     return str(auto_path)
 
