@@ -177,3 +177,22 @@ reports/*.png
 reports/*.pdf
 reports/*.json
 !reports/README.md
+
+# markdown 
+PROJECT_STATE.md
+Task.md
+Task_2_3.md
+
+checkpoints/
+*.pth
+*.pt
+*.onnx
+
+data/
+backend/data/
+*.csv
+*.json
+*.jsonl
+*.sqlite3
+*.db
+

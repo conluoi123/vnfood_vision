@@ -1,0 +1,65 @@
+# ============================================================
+# VNFood Vision — Master Configuration
+# ============================================================
+
+# ── DATA ────────────────────────────────────────────────────
+data:
+  processed_dir: "" # ⚠️ ĐỂ TRỐNG — sẽ được set tự động bởi code hoặc override qua CLI
+  image_size: 224 # T4 GPU: 224 OK | Nếu có A100 thì dùng 384
+  batch_size: 16 # T4 GPU: 16 an toàn | Nếu còn OOM thì giảm xuống 8
+  num_workers: 2 # Colab T4 chỉ nên dùng 2
+  val_split: 0.15 # 70 / 15 / 15  train/val/test
+  test_split: 0.15
+  seed: 42
+
+  augmentation:
+    randaugment_n: 2
+    randaugment_m: 9
+    color_jitter_brightness: 0.3
+    color_jitter_contrast: 0.3
+    color_jitter_saturation: 0.3
+    gaussian_blur_kernel: 3
+    mixup_alpha: 0.2 # 0.0 = tắt Mixup
+    cutmix_alpha: 1.0 # 0.0 = tắt CutMix
+    use_tta: true # Test Time Augmentation khi inference
+
+# ── MODEL ───────────────────────────────────────────────────
+model:
+  # Chọn: "efficientnet_b3" | "resnet50" | "mobilenet_v3_large"
+  backbone: "efficientnet_b3"
+  pretrained: true
+  dropout: 0.3
+  freeze_backbone_epochs: 5 # Số epoch đóng băng backbone lúc đầu
+
+# ── FOCAL LOSS ──────────────────────────────────────────────
+loss:
+  type: "focal" # "focal" | "cross_entropy"
+  focal_alpha: 0.25
+  focal_gamma: 2.0
+  label_smoothing: 0.1
+  class_weights_path: "configs/class_weights.json" # tự động tạo nếu chưa có
+
+# ── TRAINING ────────────────────────────────────────────────
+training:
+  epochs: 50
+  learning_rate: 1.0e-3
+  min_lr: 1.0e-6
+  weight_decay: 1.0e-4
+  scheduler: "cosine" # "cosine" | "step"
+  warmup_epochs: 3
+  early_stopping_patience: 10
+  grad_clip: 1.0
+  checkpoint_dir: "checkpoints/"
+
+# ── LOGGING (Weights & Biases) ──────────────────────────────
+logging:
+  use_wandb: false # Đổi true nếu có tài khoản W&B
+  project_name: "vnfood-vision"
+  experiment_name: "baseline_efficientnet_b3"
+  log_every_n_steps: 50
+
+# ── INFERENCE ───────────────────────────────────────────────
+inference:
+  top_k: 5 # Trả về top-5 dự đoán
+  confidence_threshold: 0.3 # Dưới ngưỡng này → "Không xác định"
+  model_path: "checkpoints/best_model.pth"
