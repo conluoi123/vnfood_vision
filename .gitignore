@@ -188,11 +188,5 @@ checkpoints/
 *.pt
 *.onnx
 
-data/
-backend/data/
-*.csv
-*.json
-*.jsonl
-*.sqlite3
-*.db
+
 
