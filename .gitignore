@@ -153,6 +153,7 @@ data/raw/
 data/processed/
 data/crawled/
 data/rejected/
+backend/data/chroma_db/
 *.jpg
 *.jpeg
 *.png
@@ -187,6 +188,5 @@ checkpoints/
 *.pth
 *.pt
 *.onnx
-
 
 
