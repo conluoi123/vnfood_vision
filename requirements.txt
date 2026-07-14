@@ -23,6 +23,11 @@ rank-bm25
 python-dotenv
 google-generativeai
 
+# Backend API
+fastapi
+uvicorn[standard]
+pydantic
+
 # Experiment Tracking
 wandb
 

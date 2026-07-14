@@ -57,7 +57,9 @@ class HybridRAGRetriever:
         self.id_to_index = {item_id: idx for idx, item_id in enumerate(self.ids)}
         self.documents = [self._make_document(self.kb[item_id]) for item_id in self.ids]
 
-        self.embedding_model = SentenceTransformer(self.rag_cfg["embedding_model"])
+        import torch
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.embedding_model = SentenceTransformer(self.rag_cfg["embedding_model"], device=device)
         self.reranker = CrossEncoder(self.rag_cfg["reranker_model"])
         self.bm25 = BM25Okapi([tokenize(doc) for doc in self.documents])
 
