@@ -9,7 +9,7 @@ root_dir = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(root_dir))
 
 try:
-    from src.inference import predict
+    from src.vision.inference import predict
 except Exception as e:
     import traceback
     traceback.print_exc()

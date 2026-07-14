@@ -11,15 +11,15 @@ Luồng hoạt động:
   4. AI TỰ QUYẾT ĐỊNH số lượng ảnh cần review (không cần đặt cứng con số)
 
 Chạy LOCAL:
-  python src/active_learning.py
+  python src/vision/active_learning.py
 
 Chạy COLAB:
-  !python src/active_learning.py \\
+  !python src/vision/active_learning.py \\
     --data_dir "/content/drive/MyDrive/VietFood-Project/data/processed" \\
     --model_path "checkpoints/best_model.pth"
 
   # Nếu muốn override thủ công:
-  !python src/active_learning.py --top_n 500
+  !python src/vision/active_learning.py --top_n 500
 """
 import argparse
 import csv
@@ -34,8 +34,8 @@ from PIL import Image
 from torchvision import transforms
 from tqdm import tqdm
 
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-from src.model import VNFoodModel
+sys.path.append(str(Path(__file__).resolve().parents[2]))
+from src.vision.model import VNFoodModel
 
 
 # ─────────────────────────────────────────────

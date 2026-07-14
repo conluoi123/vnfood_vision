@@ -1,0 +1,122 @@
+[
+  {
+    "query": "phở bò ăn kèm rau gì?",
+    "expected_food": "phở bò",
+    "expected_intent": "serving",
+    "expected_keywords": ["phở", "bò"]
+  },
+  {
+    "query": "phở bò có những nguyên liệu chính nào?",
+    "expected_food": "phở bò",
+    "expected_intent": "ingredients",
+    "expected_keywords": ["phở", "bò"]
+  },
+  {
+    "query": "bún bò có nguyên liệu gì?",
+    "expected_food": "bún bò",
+    "expected_intent": "ingredients",
+    "expected_keywords": ["bún", "bò"]
+  },
+  {
+    "query": "bún bò Huế dùng mắm gì?",
+    "expected_food": "bún bò Huế",
+    "expected_intent": "seasoning",
+    "expected_keywords": ["bún", "bò", "huế"]
+  },
+  {
+    "query": "cách làm bún bò Huế như thế nào?",
+    "expected_food": "bún bò Huế",
+    "expected_intent": "instructions",
+    "expected_keywords": ["bún", "bò", "huế"]
+  },
+  {
+    "query": "bánh xèo có nguyên liệu gì?",
+    "expected_food": "bánh xèo",
+    "expected_intent": "ingredients",
+    "expected_keywords": ["bánh", "xèo"]
+  },
+  {
+    "query": "gỏi cuốn có tôm không?",
+    "expected_food": "gỏi cuốn",
+    "expected_intent": "allergen_or_ingredient",
+    "expected_keywords": ["gỏi", "cuốn"]
+  },
+  {
+    "query": "bánh bèo có nhân gì?",
+    "expected_food": "bánh bèo",
+    "expected_intent": "ingredients",
+    "expected_keywords": ["bánh", "bèo"]
+  },
+  {
+    "query": "bánh bột lọc làm từ nguyên liệu gì?",
+    "expected_food": "bánh bột lọc",
+    "expected_intent": "ingredients",
+    "expected_keywords": ["bánh", "bột", "lọc"]
+  },
+  {
+    "query": "bánh canh cua gồm những gì?",
+    "expected_food": "bánh canh cua",
+    "expected_intent": "ingredients",
+    "expected_keywords": ["bánh", "canh", "cua"]
+  },
+  {
+    "query": "bánh chưng có nhân gì?",
+    "expected_food": "bánh chưng",
+    "expected_intent": "ingredients",
+    "expected_keywords": ["bánh", "chưng"]
+  },
+  {
+    "query": "bánh bao nhân thịt làm như thế nào?",
+    "expected_food": "bánh bao",
+    "expected_intent": "instructions",
+    "expected_keywords": ["bánh", "bao"]
+  },
+  {
+    "query": "bánh cuốn nhân thịt cần nguyên liệu gì?",
+    "expected_food": "bánh cuốn",
+    "expected_intent": "ingredients",
+    "expected_keywords": ["bánh", "cuốn"]
+  },
+  {
+    "query": "bánh đúc nóng có nguyên liệu gì?",
+    "expected_food": "bánh đúc",
+    "expected_intent": "ingredients",
+    "expected_keywords": ["bánh", "đúc"]
+  },
+  {
+    "query": "bánh giò có nhân gì?",
+    "expected_food": "bánh giò",
+    "expected_intent": "ingredients",
+    "expected_keywords": ["bánh", "giò"]
+  },
+  {
+    "query": "bánh khọt có tôm không?",
+    "expected_food": "bánh khọt",
+    "expected_intent": "allergen_or_ingredient",
+    "expected_keywords": ["bánh", "khọt"]
+  },
+  {
+    "query": "bánh mì thịt gồm những gì?",
+    "expected_food": "bánh mì",
+    "expected_intent": "ingredients",
+    "expected_keywords": ["bánh", "mì"]
+  },
+  {
+    "query": "bánh pía nhân gì?",
+    "expected_food": "bánh pía",
+    "expected_intent": "ingredients",
+    "expected_keywords": ["bánh", "pía"]
+  },
+  {
+    "query": "bánh tét chuối làm thế nào?",
+    "expected_food": "bánh tét",
+    "expected_intent": "instructions",
+    "expected_keywords": ["bánh", "tét"]
+  },
+  {
+    "query": "bánh tráng nướng Đà Lạt có nguyên liệu gì?",
+    "expected_food": "bánh tráng nướng",
+    "expected_intent": "ingredients",
+    "expected_keywords": ["bánh", "tráng", "nướng"]
+  }
+]

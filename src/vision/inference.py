@@ -4,8 +4,8 @@ Nhận vào 1 ảnh → trả về top-K dự đoán + confidence score
 Hỗ trợ: Test Time Augmentation (TTA)
 
 Chạy:
-  python src/inference.py --image path/to/anh.jpg
-  python src/inference.py --image path/to/anh.jpg --tta
+  python src/vision/inference.py --image path/to/anh.jpg
+  python src/vision/inference.py --image path/to/anh.jpg --tta
 """
 import argparse
 import json
@@ -15,11 +15,11 @@ from pathlib import Path
 import torch
 import torch.nn.functional as F
 import yaml
-from PIL import Image
+from PIL import Image, ImageOps
 from torchvision import transforms
 
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-from src.model import VNFoodModel
+sys.path.append(str(Path(__file__).resolve().parents[2]))
+from src.vision.model import VNFoodModel
 
 
 # ─────────────────────────────────────────────
@@ -56,10 +56,10 @@ def get_tta_transforms(image_size: int):
 # PREDICT FUNCTION
 # ─────────────────────────────────────────────
 @torch.no_grad()
-def predict(image_path: str, config_path: str, use_tta: bool = False, device: str = None, model_path_override: str = None):
+def predict(image_path: str, config_path: str, use_tta: bool = False, device: str = None, model_path_override: str = None, use_cam: bool = False):
     """
     Trả về:
-        list of dict: [{"class": "pho_bo", "confidence": 0.92}, ...]
+        list of dict: [{"class": "pho_bo", "confidence": 0.92, "cam_coord": {...}}, ...]
     """
     # Load config
     with open(config_path, "r", encoding="utf-8") as f:
@@ -89,10 +89,15 @@ def predict(image_path: str, config_path: str, use_tta: bool = False, device: st
     model.load_state_dict(ckpt['state_dict'])
     model.eval()
 
-    # Load ảnh
+    # Load ảnh và tự động xoay theo EXIF (quan trọng cho ảnh chụp từ điện thoại)
     image = Image.open(image_path).convert("RGB")
+    image = ImageOps.exif_transpose(image)
     image_size = config['data']['image_size']
 
+    # For CAM, we need to bypass torch.no_grad during the forward hook if we were doing backward, 
+    # but for simple activation mapping, we don't need gradients.
+    cam_coord = None
+    
     if use_tta:
         # TTA: average logits từ 5 transform khác nhau
         tta_transforms = get_tta_transforms(image_size)
@@ -115,15 +120,27 @@ def predict(image_path: str, config_path: str, use_tta: bool = False, device: st
 
     # Top-K results
     top_probs, top_indices = probs.topk(min(top_k, num_classes))
+    
+    # Kích hoạt Grad-CAM (chỉ cho TTA=False để đơn giản hóa)
+    if use_cam and not use_tta:
+        try:
+            from src.vision.gradcam import get_peak_cam_coordinate
+            cam_coord = get_peak_cam_coordinate(model, inp, top_indices[0].item())
+        except Exception as e:
+            print(f"Failed to calculate CAM: {e}")
+
     results = []
-    for prob, idx in zip(top_probs.tolist(), top_indices.tolist()):
+    for i, (prob, idx) in enumerate(zip(top_probs.tolist(), top_indices.tolist())):
         class_name = class_names[idx] if idx < len(class_names) else f"class_{idx}"
-        results.append({"class": class_name, "confidence": round(prob, 4)})
+        res_dict = {"class": class_name, "confidence": round(prob, 4)}
+        # Gắn tọa độ CAM vào kết quả Top 1
+        if i == 0 and cam_coord:
+            res_dict["cam_coord"] = cam_coord
+        results.append(res_dict)
 
     # Nếu confidence thấp → không xác định
     if results and results[0]['confidence'] < thresh:
-        print(f"⚠️  Confidence thấp ({results[0]['confidence']:.2%}) — "
-              "Có thể là ảnh ngoài phân phối training data.")
+        print(f"Warning: Low confidence ({results[0]['confidence']:.2%}) - Might be an out-of-domain image.")
 
     return results
 

@@ -1,6 +1,6 @@
 """
 cross_val.py — K-Fold Cross Validation cho VNFood Vision
-Chạy: python src/cross_val.py --folds 5 --epochs 10
+Chạy: python src/vision/cross_val.py --folds 5 --epochs 10
 """
 import argparse
 import json
@@ -12,11 +12,11 @@ import yaml
 from sklearn.model_selection import StratifiedKFold
 from torch.utils.data import DataLoader, Subset
 
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+sys.path.append(str(Path(__file__).resolve().parents[2]))
 
-from src.dataset import VietnameseFoodDataset, get_transforms
-from src.model import FocalLoss, VNFoodModel, compute_class_weights
-from src.train import train_one_epoch, validate
+from src.vision.dataset import VietnameseFoodDataset, get_transforms
+from src.vision.model import FocalLoss, VNFoodModel, compute_class_weights
+from src.vision.train import train_one_epoch, validate
 
 
 def run_cross_val(config_path: str, n_folds: int = 5, epochs: int = 10):

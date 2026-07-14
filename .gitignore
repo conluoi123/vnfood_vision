@@ -153,6 +153,7 @@ data/raw/
 data/processed/
 data/crawled/
 data/rejected/
+backend/data/chroma_db/
 *.jpg
 *.jpeg
 *.png
@@ -160,6 +161,11 @@ data/rejected/
 *.zip
 *.tar.gz
 *.rar
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
 
 # Model checkpoints
 checkpoints/
@@ -188,5 +194,25 @@ checkpoints/
 *.pt
 *.onnx
 
+# ── OS generated files ──
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
+# ── Node.js / Vite additional ──
+frontend/.env.local
+frontend/.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
 
+# ── Bỏ qua file cấu hình IDE local ──
+.vscode/workspace.json
+.vscode/tasks.json
+.vscode/launch.json

@@ -1,1 +1,69 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Geist", "Geist Fallback", sans-serif;
+  --font-display: "Geist", "Geist Fallback", sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", monospace;
+  
+  --color-primary: #ff4f1d;
+  --color-accent: #ff4f1d;
+  --color-[#ff4a1c]: #ff4f1d;
+}
+
+body {
+  background-color: #000000;
+  color: #d4d4d8; /* zinc-300 */
+  font-family: var(--font-sans);
+}
+
+/* Custom CSS animations */
+@keyframes laser {
+  0% {
+    top: 0%;
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0.2;
+  }
+}
+
+.animate-laser {
+  animation: laser 3.5s infinite ease-in-out;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.03);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 6s infinite ease-in-out;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 79, 29, 0.15);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 79, 29, 0.35);
+}
+
+

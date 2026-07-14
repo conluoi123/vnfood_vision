@@ -1,0 +1,816 @@
+{
+  "total": 20,
+  "metrics": {
+    "hit_at_1": 1.0,
+    "hit_at_3": 1.0,
+    "hit_at_1_count": 20,
+    "hit_at_3_count": 20
+  },
+  "results": [
+    {
+      "query": "phở bò ăn kèm rau gì?",
+      "expected_food": "phở bò",
+      "expected_intent": "serving",
+      "expected_keywords": [
+        "phở",
+        "bò"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "pho_bo_10",
+          "ten_mon": "Phở Bò",
+          "score": 5.240715408325196,
+          "rerank_score": 2.8407154083251953,
+          "food_name_boost": 2.4,
+          "intent": "serving"
+        },
+        {
+          "rank": 2,
+          "id": "pho_bo_5",
+          "ten_mon": "Phở bò",
+          "score": 3.9726783275604247,
+          "rerank_score": 1.5726783275604248,
+          "food_name_boost": 2.4,
+          "intent": "serving"
+        },
+        {
+          "rank": 3,
+          "id": "pho_bo_6",
+          "ten_mon": "Phở Bò",
+          "score": 3.854779863357544,
+          "rerank_score": 1.454779863357544,
+          "food_name_boost": 2.4,
+          "intent": "serving"
+        }
+      ]
+    },
+    {
+      "query": "phở bò có những nguyên liệu chính nào?",
+      "expected_food": "phở bò",
+      "expected_intent": "ingredients",
+      "expected_keywords": [
+        "phở",
+        "bò"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "pho_bo_5",
+          "ten_mon": "Phở bò",
+          "score": 5.0149129867553714,
+          "rerank_score": 2.614912986755371,
+          "food_name_boost": 2.4,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 2,
+          "id": "pho_bo_10",
+          "ten_mon": "Phở Bò",
+          "score": 3.9281652212142943,
+          "rerank_score": 1.5281652212142944,
+          "food_name_boost": 2.4,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 3,
+          "id": "pho_bo_8",
+          "ten_mon": "Phở bò",
+          "score": 3.8067978858947753,
+          "rerank_score": 1.4067978858947754,
+          "food_name_boost": 2.4,
+          "intent": "ingredients"
+        }
+      ]
+    },
+    {
+      "query": "bún bò có nguyên liệu gì?",
+      "expected_food": "bún bò",
+      "expected_intent": "ingredients",
+      "expected_keywords": [
+        "bún",
+        "bò"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "bun_bo_hue_8",
+          "ten_mon": "Bún Bò",
+          "score": 5.003509664535523,
+          "rerank_score": 2.6035096645355225,
+          "food_name_boost": 2.4,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 2,
+          "id": "bun_bo_hue_4",
+          "ten_mon": "Bún bò",
+          "score": 4.38153293132782,
+          "rerank_score": 1.9815329313278198,
+          "food_name_boost": 2.4,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 3,
+          "id": "bun_bo_hue_3",
+          "ten_mon": "Bún bò cay Bạc Liêu",
+          "score": 2.711351079940796,
+          "rerank_score": 2.291351079940796,
+          "food_name_boost": 0.42,
+          "intent": "ingredients"
+        }
+      ]
+    },
+    {
+      "query": "bún bò Huế dùng mắm gì?",
+      "expected_food": "bún bò Huế",
+      "expected_intent": "seasoning",
+      "expected_keywords": [
+        "bún",
+        "bò",
+        "huế"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "bun_bo_hue_2",
+          "ten_mon": "Bún bò huế",
+          "score": 5.428425407409668,
+          "rerank_score": 2.828425407409668,
+          "food_name_boost": 2.6,
+          "intent": "summary"
+        },
+        {
+          "rank": 2,
+          "id": "bun_bo_hue_7",
+          "ten_mon": "Bún bò Huế",
+          "score": 4.771695470809936,
+          "rerank_score": 2.1716954708099365,
+          "food_name_boost": 2.6,
+          "intent": "summary"
+        },
+        {
+          "rank": 3,
+          "id": "bun_bo_hue_5",
+          "ten_mon": "Bún bò Huế",
+          "score": 4.367415046691894,
+          "rerank_score": 1.7674150466918945,
+          "food_name_boost": 2.6,
+          "intent": "summary"
+        }
+      ]
+    },
+    {
+      "query": "cách làm bún bò Huế như thế nào?",
+      "expected_food": "bún bò Huế",
+      "expected_intent": "instructions",
+      "expected_keywords": [
+        "bún",
+        "bò",
+        "huế"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "bun_bo_hue_5",
+          "ten_mon": "Bún bò Huế",
+          "score": 9.299939250946045,
+          "rerank_score": 6.699939250946045,
+          "food_name_boost": 2.6,
+          "intent": "instructions"
+        },
+        {
+          "rank": 2,
+          "id": "bun_bo_hue_9",
+          "ten_mon": "Bún bò Huế",
+          "score": 8.083407497406006,
+          "rerank_score": 5.483407497406006,
+          "food_name_boost": 2.6,
+          "intent": "instructions"
+        },
+        {
+          "rank": 3,
+          "id": "bun_bo_hue_2",
+          "ten_mon": "Bún bò huế",
+          "score": 7.013486003875732,
+          "rerank_score": 4.413486003875732,
+          "food_name_boost": 2.6,
+          "intent": "instructions"
+        }
+      ]
+    },
+    {
+      "query": "bánh xèo có nguyên liệu gì?",
+      "expected_food": "bánh xèo",
+      "expected_intent": "ingredients",
+      "expected_keywords": [
+        "bánh",
+        "xèo"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "banh_xeo_10",
+          "ten_mon": "Bánh xèo",
+          "score": 5.132433080673218,
+          "rerank_score": 2.7324330806732178,
+          "food_name_boost": 2.4,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 2,
+          "id": "banh_xeo_8",
+          "ten_mon": "Bánh xèo",
+          "score": 3.244180881977081,
+          "rerank_score": 0.8441808819770813,
+          "food_name_boost": 2.4,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 3,
+          "id": "banh_xeo_9",
+          "ten_mon": "Bánh xèo miền Trung",
+          "score": 2.594466781616211,
+          "rerank_score": 2.244466781616211,
+          "food_name_boost": 0.35,
+          "intent": "ingredients"
+        }
+      ]
+    },
+    {
+      "query": "gỏi cuốn có tôm không?",
+      "expected_food": "gỏi cuốn",
+      "expected_intent": "allergen_or_ingredient",
+      "expected_keywords": [
+        "gỏi",
+        "cuốn"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "goi_cuon_2",
+          "ten_mon": "Gỏi cuốn",
+          "score": 2.8447858333587646,
+          "rerank_score": 0.44478583335876465,
+          "food_name_boost": 2.4,
+          "intent": "allergens"
+        },
+        {
+          "rank": 2,
+          "id": "goi_cuon_4",
+          "ten_mon": "Gỏi cuốn tôm thịt",
+          "score": 1.9161536931991576,
+          "rerank_score": 1.3911536931991577,
+          "food_name_boost": 0.5249999999999999,
+          "intent": "allergens"
+        },
+        {
+          "rank": 3,
+          "id": "goi_cuon_7",
+          "ten_mon": "Gỏi Cuốn Tôm Thịt",
+          "score": 1.7667774200439452,
+          "rerank_score": 1.2417774200439453,
+          "food_name_boost": 0.5249999999999999,
+          "intent": "allergens"
+        }
+      ]
+    },
+    {
+      "query": "bánh bèo có nhân gì?",
+      "expected_food": "bánh bèo",
+      "expected_intent": "ingredients",
+      "expected_keywords": [
+        "bánh",
+        "bèo"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "banh_beo_2",
+          "ten_mon": "Bánh bèo Đà Nẵng - nhân tôm thịt và nhân tôm chấy",
+          "score": 2.7075846195220947,
+          "rerank_score": 2.7075846195220947,
+          "food_name_boost": 0.0,
+          "intent": "summary"
+        },
+        {
+          "rank": 2,
+          "id": "banh_beo_9",
+          "ten_mon": "Bánh Bèo",
+          "score": 2.6058278769254684,
+          "rerank_score": 0.20582787692546844,
+          "food_name_boost": 2.4,
+          "intent": "summary"
+        },
+        {
+          "rank": 3,
+          "id": "banh_beo_6",
+          "ten_mon": "Bánh bèo chén Đà Nẵng",
+          "score": 0.20861312747001648,
+          "rerank_score": 0.20861312747001648,
+          "food_name_boost": 0.0,
+          "intent": "summary"
+        }
+      ]
+    },
+    {
+      "query": "bánh bột lọc làm từ nguyên liệu gì?",
+      "expected_food": "bánh bột lọc",
+      "expected_intent": "ingredients",
+      "expected_keywords": [
+        "bánh",
+        "bột",
+        "lọc"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "banh_bot_loc_6",
+          "ten_mon": "Bánh bột lọc (kiểu mới)",
+          "score": 3.8048350048065185,
+          "rerank_score": 3.3848350048065186,
+          "food_name_boost": 0.42,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 2,
+          "id": "banh_bot_loc_2",
+          "ten_mon": "Bánh bột lọc trần nhân tôm",
+          "score": 2.268755054473877,
+          "rerank_score": 1.918755054473877,
+          "food_name_boost": 0.35,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 3,
+          "id": "banh_bot_loc_7",
+          "ten_mon": "Bánh Bột Lọc Nhân Đậu Xanh",
+          "score": 1.5839483499526978,
+          "rerank_score": 1.2339483499526978,
+          "food_name_boost": 0.35,
+          "intent": "ingredients"
+        }
+      ]
+    },
+    {
+      "query": "bánh canh cua gồm những gì?",
+      "expected_food": "bánh canh cua",
+      "expected_intent": "ingredients",
+      "expected_keywords": [
+        "bánh",
+        "canh",
+        "cua"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "banh_canh_2",
+          "ten_mon": "Bánh Canh Cua",
+          "score": 4.320464468002319,
+          "rerank_score": 1.7204644680023193,
+          "food_name_boost": 2.6,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 2,
+          "id": "banh_canh_3",
+          "ten_mon": "🦀🦀Bánh Canh Cua 🦀🦀",
+          "score": 3.7719152927398683,
+          "rerank_score": 1.1719152927398682,
+          "food_name_boost": 2.6,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 3,
+          "id": "banh_canh_6",
+          "ten_mon": "Bánh canh chả cá",
+          "score": -1.4639635324478149,
+          "rerank_score": -1.813963532447815,
+          "food_name_boost": 0.35,
+          "intent": "ingredients"
+        }
+      ]
+    },
+    {
+      "query": "bánh chưng có nhân gì?",
+      "expected_food": "bánh chưng",
+      "expected_intent": "ingredients",
+      "expected_keywords": [
+        "bánh",
+        "chưng"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "banh_chung_6",
+          "ten_mon": "Bánh CHƯNG",
+          "score": 2.454509788751602,
+          "rerank_score": 0.05450978875160217,
+          "food_name_boost": 2.4,
+          "intent": "summary"
+        },
+        {
+          "rank": 2,
+          "id": "banh_chung_1",
+          "ten_mon": "Bánh chưng",
+          "score": 1.7803826570510863,
+          "rerank_score": -0.6196173429489136,
+          "food_name_boost": 2.4,
+          "intent": "summary"
+        },
+        {
+          "rank": 3,
+          "id": "banh_chung_9",
+          "ten_mon": "Bánh CHƯNG",
+          "score": 0.39995899200439444,
+          "rerank_score": -2.0000410079956055,
+          "food_name_boost": 2.4,
+          "intent": "summary"
+        }
+      ]
+    },
+    {
+      "query": "bánh bao nhân thịt làm như thế nào?",
+      "expected_food": "bánh bao",
+      "expected_intent": "instructions",
+      "expected_keywords": [
+        "bánh",
+        "bao"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "banh_bao_9",
+          "ten_mon": "Bánh bao nhân thịt",
+          "score": 5.802398729324341,
+          "rerank_score": 3.002398729324341,
+          "food_name_boost": 2.8,
+          "intent": "instructions"
+        },
+        {
+          "rank": 2,
+          "id": "banh_bao_8",
+          "ten_mon": "Bánh bao hình bí đỏ nhân mặn",
+          "score": 0.7769277691841125,
+          "rerank_score": 0.7769277691841125,
+          "food_name_boost": 0.0,
+          "intent": "instructions"
+        },
+        {
+          "rank": 3,
+          "id": "banh_bao_4",
+          "ten_mon": "Bánh bao nhân thịt không có trứng cút tại lười đi mua",
+          "score": 0.26549482345581055,
+          "rerank_score": 0.26549482345581055,
+          "food_name_boost": 0.0,
+          "intent": "instructions"
+        }
+      ]
+    },
+    {
+      "query": "bánh cuốn nhân thịt cần nguyên liệu gì?",
+      "expected_food": "bánh cuốn",
+      "expected_intent": "ingredients",
+      "expected_keywords": [
+        "bánh",
+        "cuốn"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "banh_cuon_1",
+          "ten_mon": "Bánh cuốn nhân thịt by chảo chống dính",
+          "score": 1.6174856185913087,
+          "rerank_score": 1.2674856185913086,
+          "food_name_boost": 0.35,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 2,
+          "id": "banh_cuon_10",
+          "ten_mon": "Bánh cuốn nóng",
+          "score": 1.6135821024576822,
+          "rerank_score": 1.1469154357910156,
+          "food_name_boost": 0.4666666666666666,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 3,
+          "id": "bun_cha_3",
+          "ten_mon": "Bún Chả Ram (Bún Chả Giò)",
+          "score": 1.43520188331604,
+          "rerank_score": 1.43520188331604,
+          "food_name_boost": 0.0,
+          "intent": "ingredients"
+        }
+      ]
+    },
+    {
+      "query": "bánh đúc nóng có nguyên liệu gì?",
+      "expected_food": "bánh đúc",
+      "expected_intent": "ingredients",
+      "expected_keywords": [
+        "bánh",
+        "đúc"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "banh_duc_3",
+          "ten_mon": "Bánh đúc nóng",
+          "score": 7.873292064666748,
+          "rerank_score": 5.273292064666748,
+          "food_name_boost": 2.6,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 2,
+          "id": "banh_duc_8",
+          "ten_mon": "Bánh đúc nóng",
+          "score": 7.470564937591552,
+          "rerank_score": 4.870564937591553,
+          "food_name_boost": 2.6,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 3,
+          "id": "banh_duc_10",
+          "ten_mon": "Bánh đúc thịt nóng Hà Nội",
+          "score": 5.130982494354248,
+          "rerank_score": 4.780982494354248,
+          "food_name_boost": 0.35,
+          "intent": "ingredients"
+        }
+      ]
+    },
+    {
+      "query": "bánh giò có nhân gì?",
+      "expected_food": "bánh giò",
+      "expected_intent": "ingredients",
+      "expected_keywords": [
+        "bánh",
+        "giò"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "banh_gio_3",
+          "ten_mon": "Bánh giò",
+          "score": 2.1721687853336333,
+          "rerank_score": -0.22783121466636658,
+          "food_name_boost": 2.4,
+          "intent": "summary"
+        },
+        {
+          "rank": 2,
+          "id": "banh_gio_7",
+          "ten_mon": "Bánh giò dee",
+          "score": 1.404072610537211,
+          "rerank_score": 0.9374059438705444,
+          "food_name_boost": 0.4666666666666666,
+          "intent": "summary"
+        },
+        {
+          "rank": 3,
+          "id": "banh_gio_4",
+          "ten_mon": "Bánh Giò Siêu Tốc Không Cần Gói Lá Chuối",
+          "score": -1.019129991531372,
+          "rerank_score": -1.019129991531372,
+          "food_name_boost": 0.0,
+          "intent": "summary"
+        }
+      ]
+    },
+    {
+      "query": "bánh khọt có tôm không?",
+      "expected_food": "bánh khọt",
+      "expected_intent": "allergen_or_ingredient",
+      "expected_keywords": [
+        "bánh",
+        "khọt"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "banh_khot_2",
+          "ten_mon": "Bánh khọt",
+          "score": 4.38538088798523,
+          "rerank_score": 1.9853808879852295,
+          "food_name_boost": 2.4,
+          "intent": "allergens"
+        },
+        {
+          "rank": 2,
+          "id": "banh_khot_1",
+          "ten_mon": "Bánh khọt tôm & hến",
+          "score": 2.0991227865219115,
+          "rerank_score": 1.5741227865219116,
+          "food_name_boost": 0.5249999999999999,
+          "intent": "allergens"
+        },
+        {
+          "rank": 3,
+          "id": "banh_khot_4",
+          "ten_mon": "Bánh khọt tôm thịt",
+          "score": 1.9551427602767943,
+          "rerank_score": 1.4301427602767944,
+          "food_name_boost": 0.5249999999999999,
+          "intent": "allergens"
+        }
+      ]
+    },
+    {
+      "query": "bánh mì thịt gồm những gì?",
+      "expected_food": "bánh mì",
+      "expected_intent": "ingredients",
+      "expected_keywords": [
+        "bánh",
+        "mì"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "banh_mi_thit_8",
+          "ten_mon": "Bánh mì thịt",
+          "score": 2.771091675758362,
+          "rerank_score": 0.17109167575836182,
+          "food_name_boost": 2.6,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 2,
+          "id": "banh_mi_thit_6",
+          "ten_mon": "Bánh Mì Thịt Nướng",
+          "score": 1.293716275691986,
+          "rerank_score": 0.7687162756919861,
+          "food_name_boost": 0.5249999999999999,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 3,
+          "id": "banh_mi_thit_7",
+          "ten_mon": "Bánh mì bì thịt",
+          "score": 0.4941789112985133,
+          "rerank_score": -0.030821088701486588,
+          "food_name_boost": 0.5249999999999999,
+          "intent": "ingredients"
+        }
+      ]
+    },
+    {
+      "query": "bánh pía nhân gì?",
+      "expected_food": "bánh pía",
+      "expected_intent": "ingredients",
+      "expected_keywords": [
+        "bánh",
+        "pía"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "banh_pia_2",
+          "ten_mon": "Bánh Pía Sầu Riêng",
+          "score": 2.066481685638428,
+          "rerank_score": 1.7164816856384277,
+          "food_name_boost": 0.35,
+          "intent": "summary"
+        },
+        {
+          "rank": 2,
+          "id": "banh_pia_8",
+          "ten_mon": "Bánh Pía sầu riêng",
+          "score": 2.0201762676239015,
+          "rerank_score": 1.6701762676239014,
+          "food_name_boost": 0.35,
+          "intent": "summary"
+        },
+        {
+          "rank": 3,
+          "id": "banh_pia_1",
+          "ten_mon": "Bánh pía",
+          "score": 2.0186801195144652,
+          "rerank_score": -0.38131988048553467,
+          "food_name_boost": 2.4,
+          "intent": "summary"
+        }
+      ]
+    },
+    {
+      "query": "bánh tét chuối làm thế nào?",
+      "expected_food": "bánh tét",
+      "expected_intent": "instructions",
+      "expected_keywords": [
+        "bánh",
+        "tét"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "banh_tet_4",
+          "ten_mon": "Bánh Tét Chuối",
+          "score": 5.814300394058227,
+          "rerank_score": 3.2143003940582275,
+          "food_name_boost": 2.6,
+          "intent": "summary"
+        },
+        {
+          "rank": 2,
+          "id": "banh_tet_10",
+          "ten_mon": "Bánh tét chuối!",
+          "score": 5.006882762908935,
+          "rerank_score": 2.4068827629089355,
+          "food_name_boost": 2.6,
+          "intent": "summary"
+        },
+        {
+          "rank": 3,
+          "id": "banh_tet_6",
+          "ten_mon": "Bánh tét",
+          "score": 3.2992096185684203,
+          "rerank_score": 0.8992096185684204,
+          "food_name_boost": 2.4,
+          "intent": "summary"
+        }
+      ]
+    },
+    {
+      "query": "bánh tráng nướng Đà Lạt có nguyên liệu gì?",
+      "expected_food": "bánh tráng nướng",
+      "expected_intent": "ingredients",
+      "expected_keywords": [
+        "bánh",
+        "tráng",
+        "nướng"
+      ],
+      "hit_at_1": true,
+      "hit_at_3": true,
+      "top_results": [
+        {
+          "rank": 1,
+          "id": "banh_trang_nuong_2",
+          "ten_mon": "Bánh tráng nướng Đà Lạt",
+          "score": 11.819537925720216,
+          "rerank_score": 9.019537925720215,
+          "food_name_boost": 2.8,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 2,
+          "id": "banh_trang_nuong_9",
+          "ten_mon": "Bánh Tráng Nướng Đà Lạt (Nước ngoài gọi là Pizza Việt Nam 🤣)",
+          "score": 9.314461708068848,
+          "rerank_score": 9.314461708068848,
+          "food_name_boost": 0.0,
+          "intent": "ingredients"
+        },
+        {
+          "rank": 3,
+          "id": "banh_trang_nuong_8",
+          "ten_mon": "Bánh tráng nướng Đà Lạt bằng chảo",
+          "score": 7.058256149291992,
+          "rerank_score": 6.558256149291992,
+          "food_name_boost": 0.5,
+          "intent": "ingredients"
+        }
+      ]
+    }
+  ]
+}
