@@ -14,6 +14,7 @@ import math
 import os
 import sys
 import time
+import csv
 from collections import Counter
 from pathlib import Path
 
@@ -269,7 +270,7 @@ def main(config_path: str, override_backbone: str = None, override_data_dir: str
 
     # ── Optimizer & Scheduler ─────────────────
     optimizer = optim.AdamW(
-        filter(lambda p: p.requires_grad, model.parameters()),
+        model.parameters(),
         lr=config['training']['learning_rate'],
         weight_decay=config['training']['weight_decay']
     )
@@ -294,6 +295,13 @@ def main(config_path: str, override_backbone: str = None, override_data_dir: str
     # ── Checkpointing ─────────────────────────
     ckpt_dir = Path(config['training']['checkpoint_dir']) / config['model']['backbone']
     ckpt_dir.mkdir(parents=True, exist_ok=True)
+
+    # ── Khởi tạo file CSV Logging ──────────────
+    csv_log_path = ckpt_dir / "training_log.csv"
+    if not csv_log_path.exists():
+        with open(csv_log_path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(["epoch", "train_loss", "train_acc", "val_loss", "val_acc1", "val_acc5", "learning_rate", "time_sec"])
 
     # Lưu class names để dùng lúc inference
     with open(ckpt_dir / "class_names.json", "w", encoding="utf-8") as f:
@@ -372,6 +380,11 @@ def main(config_path: str, override_backbone: str = None, override_data_dir: str
                        "train_acc": train_acc, "val_loss": val_loss,
                        "val_acc1": val_acc1, "val_acc5": val_acc5, "lr": lr_now})
 
+        # ── Ghi log ra file CSV ───────────────────
+        with open(csv_log_path, "a", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow([epoch, f"{train_loss:.4f}", f"{train_acc:.2f}", f"{val_loss:.4f}", f"{val_acc1:.2f}", f"{val_acc5:.2f}", f"{lr_now:.2e}", f"{elapsed:.0f}"])
+
         # ── Lưu last_checkpoint.pth (Mọi epoch — để resume khi mất kết nối) ─
         last_ckpt = {
             "epoch": epoch,
@@ -410,10 +423,16 @@ def main(config_path: str, override_backbone: str = None, override_data_dir: str
         # ── Tự động sync checkpoint lên Google Drive ────────
         if drive_ckpt_dir is not None:
             import shutil
-            for fname in ["last_checkpoint.pth", "best_model.pth", "class_names.json"]:
+            for fname in ["last_checkpoint.pth", "best_model.pth", "class_names.json", "training_log.csv"]:
                 src_f = ckpt_dir / fname
                 if src_f.exists():
-                    shutil.copy(src_f, drive_ckpt_dir / fname)
+                    dest_f = drive_ckpt_dir / fname
+                    try:
+                        if dest_f.exists():
+                            os.remove(dest_f)
+                    except Exception:
+                        pass
+                    shutil.copy(src_f, dest_f)
             print(f"  💾 Đã sync → Drive ({epoch}/{config['training']['epochs']})")
 
     print(f"\n🎉 Training xong! Best Val Top-1 Accuracy: {best_val_acc:.2f}%")

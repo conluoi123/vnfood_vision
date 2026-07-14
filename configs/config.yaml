@@ -26,7 +26,7 @@ data:
 # ── MODEL ───────────────────────────────────────────────────
 model:
   # Chọn: "efficientnet_b3" | "resnet50" | "mobilenet_v3_large"
-  backbone: "efficientnet_b3"
+  backbone: "mobilenet_v3_large"
   pretrained: true
   dropout: 0.3
   freeze_backbone_epochs: 5 # Số epoch đóng băng backbone lúc đầu
@@ -62,4 +62,4 @@ logging:
 inference:
   top_k: 5 # Trả về top-5 dự đoán
   confidence_threshold: 0.3 # Dưới ngưỡng này → "Không xác định"
-  model_path: "checkpoints/best_model.pth"
+  model_path: "checkpoints/efficientnet_b3/best_model.pth"
