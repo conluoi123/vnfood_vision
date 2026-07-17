@@ -154,9 +154,12 @@ data/processed/
 data/crawled/
 data/rejected/
 backend/data/chroma_db/
+backend/data/*.db
 *.jpg
 *.jpeg
 *.png
+!docs/*.png
+!docs/*.jpg
 *.gif
 *.zip
 *.tar.gz
