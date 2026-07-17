@@ -202,7 +202,7 @@ export default function AnalyticsView() {
                         color: '#fff'
                       }}
                       itemStyle={{ color: '#fff' }}
-                      formatter={(value: number) => [`${value}g`, ' Khối lượng']}
+                      formatter={(value) => [`${value ?? 0}g`, ' Khối lượng']}
                     />
                   </PieChart>
                 </ResponsiveContainer>
