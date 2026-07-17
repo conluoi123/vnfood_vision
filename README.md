@@ -62,6 +62,34 @@ Câu hỏi của User
 
 ---
 
+## 💻 Giao diện Ứng dụng
+
+Ứng dụng được thiết kế tối giản, hiện đại và chia thành 4 Tab chính ở thanh điều hướng bên trái:
+
+1. **🏠 Trang chủ (Workspace)**
+   - Nơi diễn ra tương tác chính. Giao diện chia làm 2 cột:
+     - **Cột Trái (Vision Zone)**: Tải ảnh lên để mô hình CNN nhận diện, xem kết quả dự đoán cùng tọa độ GradCAM (vùng ảnh AI tập trung để đưa ra quyết định), và xem bảng thành phần dinh dưỡng ước tính.
+     - **Cột Phải (Chat RAG)**: Khung chat trò chuyện trực tiếp với Trợ lý ẩm thực AI. Hỗ trợ nhập liệu bằng văn bản hoặc giọng nói (Voice Input) và tự động đọc câu trả lời (Text-To-Speech).
+     
+   <p align="center"><img src="docs/Workspace.png" width="800" alt="Workspace Tab"></p>
+
+2. **🕒 Lịch sử (History)**
+   - Lưu trữ tự động lịch sử các phiên nhận diện ảnh và đoạn chat trước đó thông qua cơ sở dữ liệu SQLite. Người dùng có thể bấm vào lịch sử cũ để tiếp tục cuộc trò chuyện dang dở.
+
+   <p align="center"><img src="docs/History.png" width="800" alt="History Tab"></p>
+
+3. **📊 Thống kê (Analytics)**
+   - Bảng điều khiển (Dashboard) trực quan hóa dữ liệu người dùng: biểu đồ radar các món ăn thường quét, lượng calo trung bình, và timeline hoạt động trong tuần.
+
+   <p align="center"><img src="docs/Analytics.png" width="800" alt="Analytics Tab"></p>
+
+4. **⚙️ Cấu hình (Settings)**
+   - Trạm điều khiển hệ thống thời gian thực (Real-time). Cho phép chuyển đổi **LLM Engine** (Gemini / Qwen Local / Colab) và **Vision Model** (MobileNetV3 / EfficientNetB3). Cấu hình sẽ đồng bộ ngay lập tức xuống backend khi bấm "Lưu" mà không cần khởi động lại Server.
+
+   <p align="center"><img src="docs/Settings.png" width="800" alt="Settings Tab"></p>
+
+---
+
 ## 🔬 Các Mô hình AI
 
 ### Vision (Nhận diện Hình ảnh)
