@@ -23,6 +23,34 @@ export const analyzeFoodAPI = async (payload: { dishKey?: string; image?: string
   return response.json();
 };
 
+type FoodAnalysisResponse = {
+  success?: boolean;
+  foodName?: string;
+  englishName?: string;
+  confidence?: number;
+};
+
+const readFileAsDataUrl = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(reader.error ?? new Error("Unable to read image file"));
+    reader.onload = () => resolve(String(reader.result));
+    reader.readAsDataURL(file);
+  });
+
+export const analyzeFoodImage = async (file: File) => {
+  const image = await readFileAsDataUrl(file);
+  const response = (await analyzeFoodAPI({ image, language: "VN" })) as FoodAnalysisResponse;
+
+  return {
+    success: response.success === true,
+    data: {
+      class_name: response.englishName ?? response.foodName ?? "Unknown",
+      confidence: response.confidence ?? 0,
+    },
+  };
+};
+
 // 3. RAG Chat
 export const chatRagAPI = async (payload: {
   message: string;
