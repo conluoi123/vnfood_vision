@@ -175,10 +175,13 @@ class RAGService:
                 # CHẠY MODEL PYTORCH THẬT Ở ĐÂY
                 config_path = "configs/config.yaml"
                 
-                # Hỗ trợ tìm tự động file model theo tên thư mục backbone (efficientnet_b3)
-                model_path_1 = "checkpoints/best_model.pth"
-                model_path_2 = "checkpoints/efficientnet_b3/best_model.pth"
-                model_path = model_path_1 if os.path.exists(model_path_1) else model_path_2
+                from backend.core.global_settings import settings_store
+                vision_model_str = settings_store.vision_model.lower()
+                backbone_folder = "efficientnet_b3" if "efficient" in vision_model_str else "mobilenet_v3_large"
+                
+                model_path = f"checkpoints/{backbone_folder}/best_model.pth"
+                if not os.path.exists(model_path):
+                    model_path = "checkpoints/best_model.pth" # Fallback
                 
                 if not os.path.exists(config_path) or not os.path.exists(model_path):
                     raise FileNotFoundError(f"Missing {config_path} or {model_path}. Please check directories.")

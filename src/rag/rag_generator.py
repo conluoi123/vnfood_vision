@@ -52,9 +52,9 @@ class RAGGenerator:
             api_key = os.environ.get("GEMINI_API_KEY")
             if api_key and api_key != "MY_GEMINI_API_KEY":
                 genai.configure(api_key=api_key)
-                self.model = genai.GenerativeModel("gemini-1.5-flash")
+                self.model = genai.GenerativeModel("gemini-3.1-flash-lite")
                 self.is_active = True
-                print("☁️ RAGGenerator: Đang sử dụng Gemini API")
+                print("☁️ RAGGenerator: Đang sử dụng Gemini API (gemini-3.1-flash-lite)")
             else:
                 print("Warning: Không có COLAB_LLM_URL, LOCAL_LLM_PATH và GEMINI_API_KEY. Hệ thống sẽ trả về câu mặc định.")
                 self.is_active = False
@@ -70,6 +70,24 @@ class RAGGenerator:
         if not self.is_active:
             return "Xin lỗi, hệ thống AI đang bảo trì. Vui lòng cấu hình GEMINI_API_KEY hoặc COLAB_LLM_URL trong file .env."
 
+        from backend.core.global_settings import settings_store
+        dynamic_mode = self.mode
+        llm_engine_pref = settings_store.llm_engine.lower()
+        
+        if "gemini" in llm_engine_pref:
+            dynamic_mode = "gemini"
+        elif "colab" in llm_engine_pref:
+            dynamic_mode = "colab"
+        elif "local" in llm_engine_pref:
+            dynamic_mode = "local"
+
+        if dynamic_mode == "local" and self.mode != "local":
+            print("Warning: Local LLM chosen but not loaded in .env. Falling back to Gemini.")
+            dynamic_mode = "gemini"
+        elif dynamic_mode == "colab" and not self.colab_url:
+            print("Warning: Colab URL not found in .env. Falling back to Gemini.")
+            dynamic_mode = "gemini"
+
         # Format context into a string
         context_str = ""
         for idx, ctx in enumerate(contexts):
@@ -83,7 +101,7 @@ class RAGGenerator:
             language_instruction_local = "CRITICAL: You MUST translate your final answer to ENGLISH. Do not answer in Vietnamese."
 
         # --- MODE 1: Chạy trực tiếp bằng Local LLM ---
-        if self.mode == "local":
+        if dynamic_mode == "local":
             try:
                 import torch
                 # Format chuẩn Alpaca Prompt từ file 05_llm_finetune.ipynb
@@ -128,7 +146,7 @@ Hãy trả lời ngắn gọn trong 1-2 câu. Không lặp lại đề bài.
                 return "Có lỗi xảy ra khi chạy mô hình AI trực tiếp trên máy của bạn."
                 
         # --- MODE 2: Chạy bằng LLM Fine-tuned qua Colab (Ngrok) ---
-        elif self.mode == "colab":
+        elif dynamic_mode == "colab":
             try:
                 import requests
                 # Inject translation instruction into query for Colab compatibility if needed

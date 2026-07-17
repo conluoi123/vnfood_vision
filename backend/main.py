@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.api.endpoints import router as api_router
-from backend.api import health_router, places_router, rag_router
+from backend.api import health_router, places_router, rag_router, history_router, analytics_router, settings_router
 from backend.core import settings
 
 def create_app() -> FastAPI:
@@ -35,6 +35,9 @@ def create_app() -> FastAPI:
     app.include_router(health_router)
     app.include_router(places_router, prefix=settings.api_prefix)
     app.include_router(rag_router, prefix=settings.api_prefix)
+    app.include_router(history_router, prefix=settings.api_prefix)
+    app.include_router(analytics_router, prefix=settings.api_prefix)
+    app.include_router(settings_router, prefix=settings.api_prefix)
     
     return app
 

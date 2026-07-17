@@ -60,3 +60,46 @@ export const searchPlacesAPI = async (foodName: string, lat?: number, lng?: numb
   });
   return response.json();
 };
+
+// 6. History APIs
+export const getHistoryAPI = async () => {
+  const response = await fetch("/api/v1/history/");
+  return response.json();
+};
+
+export const addHistoryAPI = async (payload: { id: string; foodName: string; image: string; messages: string; dishData: string; }) => {
+  const response = await fetch("/api/v1/history/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  return response.json();
+};
+
+export const clearHistoryAPI = async () => {
+  const response = await fetch("/api/v1/history/all", {
+    method: "DELETE"
+  });
+  return response.json();
+};
+
+export const deleteHistoryItemAPI = async (id: string) => {
+  const response = await fetch(`/api/v1/history/${id}`, {
+    method: "DELETE"
+  });
+  return response.json();
+};
+
+export const getAnalyticsAPI = async () => {
+  const response = await fetch("/api/v1/analytics/stats");
+  return response.json();
+};
+
+export const updateSettingsAPI = async (payload: { llmEngine: string; visionModel: string; topK: number }) => {
+  const response = await fetch("/api/v1/settings/update", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  return response.json();
+};
