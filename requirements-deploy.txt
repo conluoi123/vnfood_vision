@@ -32,6 +32,9 @@ pyyaml
 python-dotenv
 tqdm
 
+# Google Drive download (dùng trong startup.sh để tải model checkpoints)
+gdown
+
 # Backend API
 fastapi
 uvicorn[standard]

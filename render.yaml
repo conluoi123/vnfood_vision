@@ -9,11 +9,20 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.10.0
-      - key: HF_REPO_ID
-        value: htvien/llm_model_vnfood
       - key: PYTHONUNBUFFERED
         value: "1"
       - key: PORT
         value: "10000"
+      # Google Drive File IDs cho các checkpoint model
+      # Link 1: EfficientNetB3 — https://drive.google.com/file/d/11hzRB4OOq29PNEXc1QNtZOnaLWxXHpzL
+      - key: GDRIVE_EFFICIENTNET_ID
+        value: 11hzRB4OOq29PNEXc1QNtZOnaLWxXHpzL
+      # Link 2: MobileNetV3 — https://drive.google.com/file/d/15y9p5wVLiO3-Xs41yBNBS_Q2ZOyv1RZe
+      - key: GDRIVE_MOBILENET_ID
+        value: 15y9p5wVLiO3-Xs41yBNBS_Q2ZOyv1RZe
+      # BẮT BUỘC: Thêm GEMINI_API_KEY thủ công trong Render Dashboard
+      # (không lưu secret trong file này vì bảo mật)
+      - key: GEMINI_API_KEY
+        sync: false
     healthCheckPath: /health
     autoDeploy: true
