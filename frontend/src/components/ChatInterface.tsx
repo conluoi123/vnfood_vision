@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Volume2, Mic, Send } from "lucide-react";
+import { Volume2, Mic, Send, Trash2, AlertTriangle } from "lucide-react";
 import { Message, DishData, IngredientRow } from "../types";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -18,6 +18,7 @@ interface ChatInterfaceProps {
   isScanning: boolean;
   handleFindNearby: (foodName: string) => void;
   handleSendMessage: (message: string) => void;
+  handleClearChat: () => void;
   inputValue: string;
   setInputValue: (value: string) => void;
   isListening: boolean;
@@ -38,12 +39,15 @@ export default function ChatInterface({
   isScanning,
   handleFindNearby,
   handleSendMessage,
+  handleClearChat,
   inputValue,
   setInputValue,
   isListening,
   handleVoiceInput,
   language
 }: ChatInterfaceProps) {
+  const [showConfirm, setShowConfirm] = useState(false);
+
   return (
     <div className="flex flex-col gap-4 h-full pr-1 custom-scrollbar">
       <div className="flex items-center justify-between">
@@ -51,13 +55,26 @@ export default function ChatInterface({
           AI Assistant
         </h2>
         
-        {/* Optional RAG inspector toggle */}
-        <button
-          onClick={() => setShowRagInspector(!showRagInspector)}
-          className="text-[11px] text-zinc-500 hover:text-[#ff4f1d] font-mono uppercase transition-colors"
-        >
-          {showRagInspector ? "Hide Sources" : "Show RAG"}
-        </button>
+        <div className="flex items-center gap-3">
+          {/* Optional RAG inspector toggle */}
+          <button
+            onClick={() => setShowRagInspector(!showRagInspector)}
+            className="text-[11px] text-zinc-500 hover:text-[#ff4f1d] font-mono uppercase transition-colors"
+          >
+            {showRagInspector ? "Hide Sources" : "Show RAG"}
+          </button>
+          
+          {/* Clear Chat Button */}
+          {messages.length > 1 && (
+            <button
+              onClick={() => setShowConfirm(true)}
+              className="text-zinc-500 hover:text-red-500 transition-colors"
+              title={language === "VN" ? "Xóa lịch sử trò chuyện" : "Clear chat history"}
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Chat main canvas box */}
@@ -273,6 +290,58 @@ export default function ChatInterface({
           </form>
         </div>
       </div>
+
+      {/* Custom Confirm Modal for Chat */}
+      <AnimatePresence>
+        {showConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowConfirm(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              className="relative w-full max-w-sm bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+            >
+              <div className="p-6">
+                <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center mb-4">
+                  <AlertTriangle className="w-6 h-6 text-red-500" />
+                </div>
+                <h3 className="text-lg font-bold text-zinc-100 mb-2">
+                  {language === "VN" ? "Xóa lịch sử trò chuyện" : "Clear chat history"}
+                </h3>
+                <p className="text-zinc-400 text-[14px] leading-relaxed">
+                  {language === "VN" 
+                    ? "Bạn có chắc chắn muốn xóa lịch sử trò chuyện này? Hành động này sẽ xóa phiên trên máy chủ." 
+                    : "Are you sure you want to clear this chat history? This will delete the session on the server."}
+                </p>
+              </div>
+              <div className="bg-zinc-950/50 px-6 py-4 flex items-center justify-end gap-3 border-t border-white/5">
+                <button
+                  onClick={() => setShowConfirm(false)}
+                  className="px-4 py-2 text-sm font-medium text-zinc-300 hover:text-white transition-colors"
+                >
+                  {language === "VN" ? "Hủy bỏ" : "Cancel"}
+                </button>
+                <button
+                  onClick={() => {
+                    handleClearChat();
+                    setShowConfirm(false);
+                  }}
+                  className="px-4 py-2 text-sm font-medium bg-red-500 hover:bg-red-600 text-white rounded-xl transition-all active:scale-95 shadow-lg shadow-red-500/20"
+                >
+                  {language === "VN" ? "Đồng ý xóa" : "Delete"}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

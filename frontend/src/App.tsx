@@ -14,6 +14,7 @@ import { Heart } from "lucide-react";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabType>("workspace");
+  const [historyKey, setHistoryKey] = useState(0);
 
   const {
     activeDishKey, setActiveDishKey,
@@ -27,8 +28,9 @@ export default function App() {
     chatEndRef, fileInputRef,
     getCoordinates, handleTTS, handleVoiceInput,
     handleFileUpload, triggerUploadClick,
-    handleFindNearby, handleSendMessage,
-    getNutrition, getIngredients
+    handleFindNearby, handleSendMessage, handleClearChat,
+    getNutrition, getIngredients,
+    restoreHistorySession
   } = useAppLogic();
 
   const currentNutrition = getNutrition();
@@ -36,7 +38,13 @@ export default function App() {
 
   return (
     <div className="relative h-screen bg-[#0d0d0e] text-[#f4f4f5] overflow-hidden font-sans flex flex-row">
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Sidebar
+        activeTab={activeTab}
+        setActiveTab={(tab) => {
+          if (tab === "history") setHistoryKey(k => k + 1);
+          setActiveTab(tab);
+        }}
+      />
       
       <div className="flex-1 flex flex-col h-full min-w-0 relative overflow-hidden">
         {/* 🌌 Atmospheric Radial Glowing Orbs for that gorgeous premium visual aesthetic */}
@@ -109,6 +117,7 @@ export default function App() {
                   isScanning={isScanning}
                   handleFindNearby={handleFindNearby}
                   handleSendMessage={handleSendMessage}
+                  handleClearChat={handleClearChat}
                   inputValue={inputValue}
                   setInputValue={setInputValue}
                   isListening={isListening}
@@ -120,7 +129,15 @@ export default function App() {
           </>
         )}
 
-        {activeTab === "history" && <HistoryView />}
+        {activeTab === "history" && (
+          <HistoryView
+            key={historyKey}
+            onSelectHistoryItem={(item) => {
+              restoreHistorySession(item);
+              setActiveTab("workspace");
+            }}
+          />
+        )}
         {activeTab === "analytics" && <AnalyticsView />}
         {activeTab === "settings" && <SettingsView />}
 
@@ -137,7 +154,10 @@ export default function App() {
         {/* Floating help / question-mark circle in the absolute bottom right matching reference exactly! */}
         <div className="fixed bottom-4 right-4 z-50">
           <button 
-            onClick={() => handleSendMessage("Giới thiệu về VNFood Vision")}
+            onClick={() => {
+              setActiveTab("workspace");
+              setTimeout(() => handleSendMessage("Giới thiệu về VNFood Vision"), 100);
+            }}
             className="w-10 h-10 rounded-full bg-[#171719] hover:bg-[#202023] border border-[#242427] flex items-center justify-center text-zinc-400 hover:text-[#ff4f1d] transition-all shadow-xl active:scale-90"
             title="Hỗ trợ & Hướng dẫn"
           >
