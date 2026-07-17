@@ -1,0 +1,35 @@
+# ============================================================
+# requirements-deploy.txt — dành riêng cho Deploy lên Render
+# Loại bỏ các package nặng/không cần thiết khi chạy production
+# ============================================================
+
+# Core ML — dùng CPU-only để tránh pull CUDA (~700MB thay vì ~2GB)
+torch --index-url https://download.pytorch.org/whl/cpu
+torchvision --index-url https://download.pytorch.org/whl/cpu
+numpy
+pillow
+
+# HuggingFace — download model weights từ Hub
+huggingface_hub
+
+# RAG & Embedding
+chromadb
+sentence-transformers
+rank-bm25
+
+# Config & Utils
+pyyaml
+python-dotenv
+tqdm
+
+# Backend API
+fastapi
+uvicorn[standard]
+pydantic
+
+# HTTP / Web scraping (dùng cho places API)
+requests
+beautifulsoup4
+
+# Data
+pandas

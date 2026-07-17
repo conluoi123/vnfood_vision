@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: vnfood-backend
+    runtime: python
+    region: singapore
+    plan: free
+    buildCommand: pip install --no-cache-dir -r requirements-deploy.txt
+    startCommand: bash startup.sh
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+      - key: HF_REPO_ID
+        value: htvien/llm_model_vnfood
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: PORT
+        value: "10000"
+    healthCheckPath: /health
+    autoDeploy: true

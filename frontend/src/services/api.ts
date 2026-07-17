@@ -3,9 +3,16 @@
  * Centralizes all backend communication.
  */
 
+// Production: dùng Render backend URL (được set trong Vercel env)
+// Development: dùng proxy của Vite (trỏ về localhost:8888)
+const getApiBase = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  return apiUrl ? apiUrl : '';
+};
+
 // 1. Analyze Nutrition
 export const analyzeNutritionAPI = async (dishName: string) => {
-  const response = await fetch("/api/v1/rag/analyze-nutrition", {
+  const response = await fetch(`${getApiBase()}/api/v1/rag/analyze-nutrition`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ dishName })
@@ -15,7 +22,7 @@ export const analyzeNutritionAPI = async (dishName: string) => {
 
 // 2. Analyze Food (Identify via Key or Image)
 export const analyzeFoodAPI = async (payload: { dishKey?: string; image?: string; language: string }) => {
-  const response = await fetch("/api/v1/rag/analyze-food", {
+  const response = await fetch(`${getApiBase()}/api/v1/rag/analyze-food`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
@@ -59,7 +66,7 @@ export const chatRagAPI = async (payload: {
   history: any[];
   language: string;
 }) => {
-  const response = await fetch("/api/v1/rag/chat-rag", {
+  const response = await fetch(`${getApiBase()}/api/v1/rag/chat-rag`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
@@ -69,7 +76,7 @@ export const chatRagAPI = async (payload: {
 
 // 4. Text to Speech
 export const ttsAPI = async (text: string) => {
-  const response = await fetch("/api/v1/rag/tts", {
+  const response = await fetch(`${getApiBase()}/api/v1/rag/tts`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text })
@@ -81,7 +88,7 @@ export const ttsAPI = async (text: string) => {
 
 // 5. Places Search
 export const searchPlacesAPI = async (foodName: string, lat?: number, lng?: number) => {
-  const response = await fetch("/api/v1/places/search-url", {
+  const response = await fetch(`${getApiBase()}/api/v1/places/search-url`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ food_name: foodName, latitude: lat, longitude: lng, radius_km: 3 })
@@ -91,12 +98,12 @@ export const searchPlacesAPI = async (foodName: string, lat?: number, lng?: numb
 
 // 6. History APIs
 export const getHistoryAPI = async () => {
-  const response = await fetch("/api/v1/history/");
+  const response = await fetch(`${getApiBase()}/api/v1/history/`);
   return response.json();
 };
 
 export const addHistoryAPI = async (payload: { id: string; foodName: string; image: string; messages: string; dishData: string; }) => {
-  const response = await fetch("/api/v1/history/", {
+  const response = await fetch(`${getApiBase()}/api/v1/history/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
@@ -105,26 +112,26 @@ export const addHistoryAPI = async (payload: { id: string; foodName: string; ima
 };
 
 export const clearHistoryAPI = async () => {
-  const response = await fetch("/api/v1/history/all", {
+  const response = await fetch(`${getApiBase()}/api/v1/history/all`, {
     method: "DELETE"
   });
   return response.json();
 };
 
 export const deleteHistoryItemAPI = async (id: string) => {
-  const response = await fetch(`/api/v1/history/${id}`, {
+  const response = await fetch(`${getApiBase()}/api/v1/history/${id}`, {
     method: "DELETE"
   });
   return response.json();
 };
 
 export const getAnalyticsAPI = async () => {
-  const response = await fetch("/api/v1/analytics/stats");
+  const response = await fetch(`${getApiBase()}/api/v1/analytics/stats`);
   return response.json();
 };
 
 export const updateSettingsAPI = async (payload: { llmEngine: string; visionModel: string; topK: number }) => {
-  const response = await fetch("/api/v1/settings/update", {
+  const response = await fetch(`${getApiBase()}/api/v1/settings/update`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
