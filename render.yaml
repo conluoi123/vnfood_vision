@@ -4,7 +4,7 @@ services:
     runtime: python
     region: singapore
     plan: free
-    buildCommand: pip install --no-cache-dir -r requirements-deploy.txt
+    buildCommand: bash build.sh
     startCommand: bash startup.sh
     envVars:
       - key: PYTHON_VERSION
@@ -13,6 +13,8 @@ services:
         value: "1"
       - key: PORT
         value: "10000"
+      - key: HF_HOME
+        value: "backend/data/hf_cache"
       # Google Drive File IDs cho các checkpoint model
       # Link 1: EfficientNetB3 — https://drive.google.com/file/d/11hzRB4OOq29PNEXc1QNtZOnaLWxXHpzL
       - key: GDRIVE_EFFICIENTNET_ID
