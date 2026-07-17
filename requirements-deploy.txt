@@ -36,6 +36,7 @@ tqdm
 fastapi
 uvicorn[standard]
 pydantic
+python-multipart
 
 # HTTP
 requests
