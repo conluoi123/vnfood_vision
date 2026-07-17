@@ -42,10 +42,13 @@ jobs:
         run: npm run build
 
       - name: Pull Vercel production configuration
+        working-directory: .
         run: npx vercel@latest pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
 
       - name: Build Vercel output
+        working-directory: .
         run: npx vercel@latest build --prod --token="${{ secrets.VERCEL_TOKEN }}"
 
       - name: Deploy prebuilt production output
+        working-directory: .
         run: npx vercel@latest deploy --prebuilt --prod --token="${{ secrets.VERCEL_TOKEN }}"
