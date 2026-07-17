@@ -40,3 +40,6 @@ requests
 beautifulsoup4
 selenium
 webdriver-manager
+
+# Fix Hugging Face Error
+gradio
