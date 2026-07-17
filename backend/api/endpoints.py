@@ -4,17 +4,31 @@ from fastapi import APIRouter, File, UploadFile, HTTPException
 import sys
 from pathlib import Path
 
-# Thêm root dự án vào path để có thể import src.inference
+# Thêm root dự án vào path để có thể import src.vision.inference
 root_dir = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(root_dir))
 
-try:
-    from src.vision.inference import predict
-except Exception as e:
-    import traceback
-    traceback.print_exc()
-    # Để server crash thẳng nếu lỗi import, giúp ta thấy rõ lỗi trên Terminal
-    raise e
+# Lazy import: không import lúc khởi động để tránh crash server
+# khi model chưa có hoặc dependencies chưa load được
+_predict_fn = None
+_predict_error = None
+
+def _get_predict():
+    """Load hàm predict theo kiểu lazy — chỉ load khi thực sự cần."""
+    global _predict_fn, _predict_error
+    if _predict_fn is not None:
+        return _predict_fn
+    if _predict_error is not None:
+        raise _predict_error
+    try:
+        from src.vision.inference import predict
+        _predict_fn = predict
+        return _predict_fn
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        _predict_error = e
+        raise e
 
 router = APIRouter()
 
@@ -22,6 +36,15 @@ router = APIRouter()
 async def predict_image(file: UploadFile = File(...)):
     if not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="Vui lòng tải lên một file ảnh hợp lệ.")
+
+    # Kiểm tra predict function có khả dụng không
+    try:
+        predict = _get_predict()
+    except Exception as e:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Vision model không khả dụng trên server này: {str(e)}"
+        )
 
     # Lưu file ảnh do Frontend gửi lên vào thư mục tạm
     tmp_path = ""
@@ -76,7 +99,10 @@ async def predict_image(file: UploadFile = File(...)):
                 }
             }
         }
+    except HTTPException:
+        raise
     except Exception as e:
         if 'tmp_path' in locals() and os.path.exists(tmp_path):
             os.remove(tmp_path)
         raise HTTPException(status_code=500, detail=str(e))
+

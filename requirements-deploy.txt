@@ -3,11 +3,14 @@
 # Loại bỏ các package nặng/không cần thiết khi chạy production
 # ============================================================
 
-# Core ML — dùng CPU-only để tránh pull CUDA (~700MB thay vì ~2GB)
+# Core ML — CPU-only để tránh pull CUDA (~700MB thay vì ~2GB)
 torch --index-url https://download.pytorch.org/whl/cpu
 torchvision --index-url https://download.pytorch.org/whl/cpu
 numpy
 pillow
+
+# Vision (dùng headless để nhẹ hơn opencv-python đầy đủ)
+opencv-python-headless
 
 # HuggingFace — download model weights từ Hub
 huggingface_hub
@@ -16,6 +19,13 @@ huggingface_hub
 chromadb
 sentence-transformers
 rank-bm25
+scikit-learn
+
+# LLM / Gemini API
+google-generativeai
+
+# Text to Speech
+gtts
 
 # Config & Utils
 pyyaml
@@ -27,9 +37,10 @@ fastapi
 uvicorn[standard]
 pydantic
 
-# HTTP / Web scraping (dùng cho places API)
+# HTTP
 requests
 beautifulsoup4
 
 # Data
 pandas
+
