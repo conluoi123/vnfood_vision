@@ -39,3 +39,12 @@ export interface NutritionStats {
   fat: string;
   allergen: string;
 }
+
+export interface ScanHistoryItem {
+  id: string;
+  foodName: string;
+  image: string;
+  messages: string;
+  dishData: string;
+  date: string;
+}

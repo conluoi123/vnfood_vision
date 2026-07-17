@@ -1,12 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Message, DishData, IngredientRow, NutritionStats } from "../types";
 import { NUTRITION_DATABASE, INGREDIENTS_TABLE_DATABASE, FOCUS_COORDINATES } from "../constants/data";
-import { 
-  analyzeNutritionAPI, 
-  analyzeFoodAPI, 
-  chatRagAPI, 
-  ttsAPI, 
-  searchPlacesAPI 
+import {
+  analyzeNutritionAPI,
+  analyzeFoodAPI,
+  chatRagAPI,
+  ttsAPI,
+  searchPlacesAPI,
+  addHistoryAPI
 } from "../services/api";
 
 export function useAppLogic() {
@@ -14,7 +15,7 @@ export function useAppLogic() {
   const [selectedDish, setSelectedDish] = useState<DishData | null>(null);
   const [customImage, setCustomImage] = useState<string | null>(null);
   const [isScanning, setIsScanning] = useState<boolean>(false);
-  const [showGradCam, setShowGradCam] = useState<boolean>(true);
+  const [showGradCam, setShowGradCam] = useState<boolean>(false);
   const [isListening, setIsListening] = useState<boolean>(false);
 
   // Real-time API States
@@ -28,9 +29,14 @@ export function useAppLogic() {
   const [inputValue, setInputValue] = useState<string>("");
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // Generation counter – incrementing cancels stale async responses
+  const analysisGenRef = useRef<number>(0);
+  // True while restoring from history – suppresses all auto-effects
+  const isRestoringRef = useRef<boolean>(false);
 
   const getCoordinates = () => {
     if (selectedDish?.gradcamCoordinates) return selectedDish.gradcamCoordinates;
@@ -38,20 +44,36 @@ export function useAppLogic() {
     return FOCUS_COORDINATES[activeDishKey] || FOCUS_COORDINATES.pho;
   };
 
-  const analyzeDish = async (key: string, isCustomUpload: boolean = false, base64Image?: string) => {
+  // ─── Core analysis (fresh scans only, never called during history restore) ───
+  const analyzeDish = useCallback(async (key: string, isCustomUpload: boolean = false, base64Image?: string) => {
+    if (isRestoringRef.current) return;
+
     setIsScanning(true);
-    if (!isCustomUpload) setCustomImage(null);
+    if (!isCustomUpload) {
+      setCustomImage(null);
+      setCurrentSessionId(null);
+      setDynamicNutrition(null);
+      setDynamicIngredients(null);
+    }
+
+    const gen = ++analysisGenRef.current;
 
     try {
-      const payload = isCustomUpload && base64Image 
-        ? { image: base64Image, language } 
+      const payload = isCustomUpload && base64Image
+        ? { image: base64Image, language }
         : { dishKey: key, language };
 
       const data = await analyzeFoodAPI(payload);
 
+      if (analysisGenRef.current !== gen) return; // Stale response – ignore
+
       if (data.success) {
         setSelectedDish(data);
-        
+
+        if (isCustomUpload && base64Image) {
+          setCurrentSessionId(Date.now().toString());
+        }
+
         let initialMsgContent = "";
         if (language === "EN") {
           if (key === "pho") initialMsgContent = "This is **Phở Bò**, Vietnam's iconic beef noodle soup. The essence lies in the bone-marrow broth, simmered for 12+ hours with charred ginger and star anise.";
@@ -67,57 +89,109 @@ export function useAppLogic() {
           else initialMsgContent = `Đây là món **${data.foodName}** (${data.englishName}). Công nghệ nhận diện AI phân tích vùng nguyên liệu chính "${data.explainableFocus}" của đĩa ăn để cung cấp tỉ lệ dưỡng chất và công thức tối ưu nhất.`;
         }
 
-        setMessages([
-          {
-            role: "assistant",
-            content: initialMsgContent,
-            retrievedChunks: data.ragChunks
-          }
-        ]);
+        setMessages([{
+          role: "assistant",
+          content: initialMsgContent,
+          retrievedChunks: data.ragChunks
+        }]);
       }
     } catch (err) {
       console.error("Analysis API failed:", err);
     } finally {
-      setIsScanning(false);
+      if (analysisGenRef.current === gen) {
+        setIsScanning(false);
+      }
     }
-  };
+  }, [language]);
 
+  // ─── Auto-analyze on preset dish selection ───
   useEffect(() => {
-    analyzeDish(activeDishKey);
+    if (activeDishKey !== "custom" && !isRestoringRef.current) {
+      analyzeDish(activeDishKey);
+    }
   }, [activeDishKey]);
 
+  // ─── Fetch dynamic nutrition only for fresh custom uploads ───
   useEffect(() => {
+    if (isRestoringRef.current) return;
     if (customImage && selectedDish) {
       setDynamicNutrition(null);
       setDynamicIngredients(null);
       setIsNutritionLoading(true);
-      
+
       analyzeNutritionAPI(selectedDish.foodName)
-      .then(data => {
-        if (data.success && data.data) {
-          const d = data.data;
-          setDynamicNutrition({
-            calories: typeof d.calories === 'number' ? d.calories : parseInt(d.calories) || 450,
-            caloriesTarget: 2000,
-            protein: typeof d.protein === 'number' ? d.protein : parseInt(d.protein) || 20,
-            proteinTarget: 60,
-            carbs: typeof d.carbs === 'string' ? d.carbs : `${d.carbs}g`,
-            fat: typeof d.fat === 'string' ? d.fat : `${d.fat}g`,
-            allergen: d.allergen || "Không xác định"
-          });
-          if (Array.isArray(d.ingredients)) setDynamicIngredients(d.ingredients);
-        }
-      })
-      .catch(console.error)
-      .finally(() => setIsNutritionLoading(false));
+        .then(data => {
+          if (isRestoringRef.current) return;
+          if (data.success && data.data) {
+            const d = data.data;
+            setDynamicNutrition({
+              calories: typeof d.calories === 'number' ? d.calories : parseInt(d.calories) || 450,
+              caloriesTarget: 2000,
+              protein: typeof d.protein === 'number' ? d.protein : parseInt(d.protein) || 20,
+              proteinTarget: 60,
+              carbs: typeof d.carbs === 'string' ? d.carbs : `${d.carbs}g`,
+              fat: typeof d.fat === 'string' ? d.fat : `${d.fat}g`,
+              allergen: d.allergen || "Không xác định"
+            });
+            if (Array.isArray(d.ingredients)) setDynamicIngredients(d.ingredients);
+          }
+        })
+        .catch(console.error)
+        .finally(() => setIsNutritionLoading(false));
     }
-  }, [customImage, selectedDish]);
+  }, [customImage, selectedDish?.foodName]);
 
   const scrollToBottom = () => chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
 
   useEffect(() => {
     scrollToBottom();
   }, [messages, isTyping]);
+
+  // ─── Auto-save history on message changes (suppressed during restore) ───
+  useEffect(() => {
+    if (isRestoringRef.current) return;
+    if (currentSessionId && customImage && selectedDish && messages.length > 0) {
+      try {
+        addHistoryAPI({
+          id: currentSessionId,
+          foodName: selectedDish.foodName,
+          image: customImage,
+          messages: JSON.stringify(messages),
+          dishData: JSON.stringify(selectedDish)
+        }).catch(e => console.error('Background history save failed', e));
+      } catch (e) {
+        console.error('Could not save history to API', e);
+      }
+    }
+  }, [messages, currentSessionId, customImage, selectedDish]);
+
+  // ─── Restore from history: loads state directly, zero API calls ───
+  const restoreHistorySession = useCallback((item: import('../types').ScanHistoryItem) => {
+    try {
+      isRestoringRef.current = true;   // Block all auto-effects
+      analysisGenRef.current++;         // Cancel any in-flight analysis
+
+      const parsedMessages = JSON.parse(item.messages || "[]");
+      const parsedDishData = JSON.parse(item.dishData || "null");
+
+      setCurrentSessionId(item.id);
+      setActiveDishKey("custom");
+      setCustomImage(item.image);
+      if (parsedDishData) setSelectedDish(parsedDishData);
+      setDynamicNutrition(null);
+      setDynamicIngredients(null);
+      if (parsedMessages.length > 0) setMessages(parsedMessages);
+
+      // Lift flag after React has committed all state updates
+      setTimeout(() => {
+        isRestoringRef.current = false;
+      }, 300);
+
+    } catch (e) {
+      isRestoringRef.current = false;
+      console.error("Failed to restore session", e);
+    }
+  }, []);
 
   const handleTTS = async (text: string) => {
     if (isSpeaking) {
@@ -144,7 +218,6 @@ export function useAppLogic() {
       const blob = await ttsAPI(cleanedText);
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
-      
       (window as any).currentAudio = audio;
       audio.onended = () => setIsSpeaking(false);
       audio.onerror = () => setIsSpeaking(false);
@@ -163,11 +236,9 @@ export function useAppLogic() {
     }
     const SpeechRecognitionAPI = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     const recognition = new SpeechRecognitionAPI();
-    
     recognition.lang = language === "VN" ? "vi-VN" : "en-US";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
-
     recognition.onstart = () => setIsListening(true);
     recognition.onresult = (event: any) => setInputValue(event.results[0][0].transcript);
     recognition.onerror = (event: any) => {
@@ -181,6 +252,7 @@ export function useAppLogic() {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      isRestoringRef.current = false; // Clear restore flag for fresh uploads
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64 = reader.result as string;
@@ -205,7 +277,7 @@ export function useAppLogic() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => search(pos.coords.latitude, pos.coords.longitude),
-        () => search() 
+        () => search()
       );
     } else {
       search();
@@ -241,6 +313,22 @@ export function useAppLogic() {
     }
   };
 
+  const handleClearChat = () => {
+    if (messages.length > 1) {
+      setMessages([messages[0]]);
+      if (currentSessionId) {
+        try {
+          import('../services/api').then(module => {
+            module.deleteHistoryItemAPI(currentSessionId).catch(console.error);
+          });
+          setCurrentSessionId(null);
+        } catch (e) {
+          console.error("Failed to delete session", e);
+        }
+      }
+    }
+  };
+
   const getNutrition = (): NutritionStats => {
     if (customImage && selectedDish) {
       if (dynamicNutrition) return dynamicNutrition;
@@ -248,14 +336,12 @@ export function useAppLogic() {
       let hash = 0;
       for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
       const rand = (min: number, max: number, seedOffset: number) => min + (Math.abs(hash) + seedOffset) % (max - min + 1);
-      
       const hasGluten = (hash % 2) === 0;
       const hasPeanuts = (hash % 3) === 0;
       let allergen = "Không phát hiện dị ứng phổ biến";
       if (hasGluten && hasPeanuts) allergen = "Gluten (Tinh bột), Đậu phộng";
       else if (hasGluten) allergen = "Gluten (Tinh bột)";
       else if (hasPeanuts) allergen = "Đậu phộng";
-
       return {
         calories: rand(250, 800, 1), caloriesTarget: 2000,
         protein: rand(10, 45, 2), proteinTarget: 60,
@@ -290,7 +376,9 @@ export function useAppLogic() {
     chatEndRef, fileInputRef,
     getCoordinates, handleTTS, handleVoiceInput,
     handleFileUpload, triggerUploadClick,
-    handleFindNearby, handleSendMessage,
-    getNutrition, getIngredients
+    handleFindNearby, handleSendMessage, handleClearChat,
+    getNutrition, getIngredients,
+    currentSessionId, setCurrentSessionId,
+    restoreHistorySession
   };
 }
