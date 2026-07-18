@@ -1,7 +1,7 @@
 import React from "react";
 import { LayoutDashboard, History, Settings, User, Activity } from "lucide-react";
 
-export type TabType = "workspace" | "history" | "analytics" | "settings";
+export type TabType = "trang-chu" | "history" | "analytics" | "settings";
 
 interface SidebarProps {
   activeTab: TabType;
@@ -10,7 +10,7 @@ interface SidebarProps {
 
 export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
   const tabs = [
-    { id: "workspace" as TabType, label: "Workspace", icon: LayoutDashboard },
+    { id: "trang-chu" as TabType, label: "Trang Chủ", icon: LayoutDashboard },
     { id: "history" as TabType, label: "Lịch sử", icon: History },
     { id: "analytics" as TabType, label: "Thống kê", icon: Activity },
     { id: "settings" as TabType, label: "Cấu hình", icon: Settings },

@@ -13,7 +13,7 @@ import { HelpCircle } from "lucide-react";
 import { Heart } from "lucide-react";
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<TabType>("workspace");
+  const [activeTab, setActiveTab] = useState<TabType>("trang-chu");
   const [historyKey, setHistoryKey] = useState(0);
 
   const {
@@ -54,7 +54,7 @@ export default function App() {
         {/* 🏷️ VNFood Vision Premium Header */}
         <Header language={language} setLanguage={setLanguage} />
 
-        {activeTab === "workspace" && (
+        {activeTab === "trang-chu" && (
           <>
             {/* Quick Dish Selection Pills */}
             <DishSelector 
@@ -134,7 +134,7 @@ export default function App() {
             key={historyKey}
             onSelectHistoryItem={(item) => {
               restoreHistorySession(item);
-              setActiveTab("workspace");
+              setActiveTab("trang-chu");
             }}
           />
         )}
@@ -155,7 +155,7 @@ export default function App() {
         <div className="fixed bottom-4 right-4 z-50">
           <button 
             onClick={() => {
-              setActiveTab("workspace");
+              setActiveTab("trang-chu");
               setTimeout(() => handleSendMessage("Giới thiệu về VNFood Vision"), 100);
             }}
             className="w-10 h-10 rounded-full bg-[#171719] hover:bg-[#202023] border border-[#242427] flex items-center justify-center text-zinc-400 hover:text-[#ff4f1d] transition-all shadow-xl active:scale-90"
